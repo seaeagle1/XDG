@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+        <script type="text/javascript" src="pure/jquery.js"></script>
+        <script type="text/javascript" src="pure/pure.js"></script>	
+		<style type="text/css">
+		body {
+			font-family: "Lucida Sans", sans-serif;
+			font-size: 0.8em;
+		}
+		
+		.codeblock {
+			font-family: "Consolas", "Lucida Console", monospace;
+			font-size: 125%;
+			margin: 1em;
+			padding: 0.75em;
+			border: 1px solid #aaa;
+			border-radius: 10px;
+			background-color: #eef;
+		}
+		
+		span.keyword {
+			color: #0000AA;
+		}
+		
+		h1,h2,h3,h4 {
+			color: #000077;
+		}
+		
+		ul#menu {
+			margin: 0;
+			padding: 0;
+			width: 200px;
+			overflow-x: scroll;
+			float: left;
+		}
+
+		ul#menu > li {
+			margin-top: 0.5em;
+		}
+		
+		ul#menu ul {
+			padding: 0;
+			padding-left: 15px;
+		}
+		
+		div#type {
+			margin-left: 210px;
+			height: 100%;
+		}
+		
+		div#summary {
+			margin: 1em;
+			border-radius: 5px;
+			padding: 0.1em;
+			padding-left: 0.4em;
+		}
+		
+		div#summary, div.Methods {
+			background: #ffffff; /* Old browsers */
+			background: -moz-linear-gradient(top,  #6d88b7 0%, #eaf0fc 4%, #ffffff 86%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6d88b7), color-stop(4%,#eaf0fc), color-stop(86%,#ffffff)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top,  #6d88b7 0%,#eaf0fc 4%,#ffffff 86%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top,  #6d88b7 0%,#eaf0fc 4%,#ffffff 86%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top,  #6d88b7 0%,#eaf0fc 4%,#ffffff 86%); /* IE10+ */
+			background: linear-gradient(top,  #6d88b7 0%,#eaf0fc 4%,#ffffff 86%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d88b7', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+		}
+		
+		div.Methods {
+			min-height: 30px;
+			margin-left: 10px;
+			margin-right: 10px;
+			padding-top: 8px;
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-bottom: 4px;
+			border-radius: 3px;
+		}
+		
+		div.Methods div.NameWithTypes {
+			display: inline-block;
+			width: 350px;	
+			vertical-align: top;
+		}
+		
+		div.Methods div.Summary {
+			display: inline-block;
+			width: 400px;
+			padding-left: 5px;
+		}
+		
+		h4 {
+			margin-bottom: 0;
+		}
+		
+		div.details > span {
+			margin-left: 10px;
+		}
+		
+		span.ReturnDocs {
+			font-style: italic;
+		}
+		
+		div.Methods div.details{
+			display:none;
+		}
+		
+		div#copyright {
+			background-color: #000066;
+			color: #fff;
+			height: 17px;
+			vertical-align: bottom;
+			border-radius: 10px;
+			margin-bottom: 25px;
+			text-align: right;
+			padding-right: 20px;
+		}
+		
+		div#copyright a{
+			color: #fff;
+		}
+		</style>
+	</head>
+	<body>
+			<ul id="menu">
+				<li class="primary">
+					<span class="ns"></span>
+					<ul>
+						<li class="secondary"></li>
+					</ul>
+				</li>
+			</ul>
+		
+		<div id="type">
+		<div id="copyright"><span class="Title"></span> - <span class="Copyright"></span></div>
+		<h1 class="Name"></h1>
+			<div id="summary">
+				<h2>Summary</h2>
+				<span class="Summary"></span>
+			</div>
+			<pre class="codeblock"><code class="CSharpDecl"></code></pre>
+			
+			<div id="members">
+				<h2>Members</h2>
+				<div class="Methods" onclick="$(this).children('div.details').toggle();">
+					<div class="NameWithTypes"></div><div class="Summary"></div>
+					<div class="details">
+						<h4>Parameters:</h4>
+						<h4>Returns:</h4> <span class="ReturnType"></span><br />
+						<span class="ReturnDocs"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		var query = window.location.search.replace('?', '');
+		$.ajax({
+		  url: query+'.js',
+		  dataType: 'json',
+		  success: function(data) {
+			$('#type').autoRender(data);
+			
+			var directive = {
+			 'li.primary':{
+			  'm<-Menu':{
+			   'span.ns':'m.Ns',
+			   'li.secondary':{
+			    'link<-m.Types':{
+				 '.':'link'
+				}
+			   }
+			  }
+			 }
+			};
+			
+			$('#menu').render(data, directive);
+			document.title = data.Title;
+		  }
+		});		
+		</script>
+	</body>
+</html>
