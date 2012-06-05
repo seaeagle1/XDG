@@ -44,8 +44,8 @@ namespace XDG
             else if (method.IsFamily)
                 Access = "protected";
 
-            if(method.ReturnType.ReturnType.FullName != "System.Void")
-                ReturnType = method.ReturnType.ReturnType.ToXdgUrl();
+            if(method.ReturnType.FullName != "System.Void")
+                ReturnType = method.ReturnType.ToXdgUrl();
 
             XmlNode doc = Xdg.FindXmlDoc(method);
             if (doc != null)

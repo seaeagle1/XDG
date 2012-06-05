@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Mono.Cecil\Mono.Cecil.csproj">
-      <Project>{3B5B7DD9-270D-4CF0-80D9-B9D81FC81549}</Project>
+      <Project>{3b5b7dd9-270d-4cf0-80d9-b9d81fc81549}</Project>
       <Name>Mono.Cecil</Name>
     </ProjectReference>
     <ProjectReference Include="XmlDocIdLib\XmlDocIdLib.csproj">

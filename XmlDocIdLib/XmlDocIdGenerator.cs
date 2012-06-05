@@ -307,7 +307,7 @@ namespace XmlDocIdLib
                     {
                         // add return type parameter path
                         stbTempPath.Append("~");
-                        stbTempPath.Append(GetXmlDocParameterPath(thisMethodDef.ReturnType.ReturnType, false));
+                        stbTempPath.Append(GetXmlDocParameterPath(thisMethodDef.ReturnType, false));
                     }
                 }
 
@@ -513,25 +513,25 @@ namespace XmlDocIdLib
                     CurrPath.Append("]");
                 }
             }
-            else if (tpType is ReferenceType)
+            else if (tpType is ByReferenceType)
             {
                 // parameter is passed by reference
-                CurrPath.Append(GetXmlDocParameterPath((tpType as ReferenceType).ElementType, false));
+                CurrPath.Append(GetXmlDocParameterPath((tpType as ByReferenceType).ElementType, false));
                 CurrPath.Append("@");
             }
-            else if (tpType is ModifierOptional)
+            else if (tpType is OptionalModifierType)
             {
                 // parameter has optional modifier
-                ModifierOptional thisModOpt = tpType as ModifierOptional;
+                OptionalModifierType thisModOpt = tpType as OptionalModifierType;
 
                 CurrPath.Append(GetXmlDocParameterPath(thisModOpt.ElementType, ExplicitMode));
                 CurrPath.Append("!");
                 CurrPath.Append(GetXmlDocParameterPath(thisModOpt.ModifierType, ExplicitMode));
             }
-            else if (tpType is ModifierRequired)
+            else if (tpType is RequiredModifierType)
             {
                 // parameter has required modifier
-                ModifierRequired thisModReq = tpType as ModifierRequired;
+                RequiredModifierType thisModReq = tpType as RequiredModifierType;
 
                 CurrPath.Append(GetXmlDocParameterPath(thisModReq.ElementType, ExplicitMode));
                 CurrPath.Append("|");
@@ -545,7 +545,7 @@ namespace XmlDocIdLib
 
                 // return type
                 CurrPath.Append("=FUNC:");
-                CurrPath.Append(GetXmlDocParameterPath(thisFuncPtr.ReturnType.ReturnType, ExplicitMode));
+                CurrPath.Append(GetXmlDocParameterPath(thisFuncPtr.ReturnType, ExplicitMode));
 
                 // method's parameters
                 if (thisFuncPtr.Parameters.Count > 0)

@@ -62,7 +62,7 @@ namespace XDG
             }
 
             xmlIdGen = new XmlDocIdLib.XmlDocIdGenerator();
-            AssemblyDefinition library = AssemblyFactory.GetAssembly(args[0]);
+            AssemblyDefinition library = AssemblyDefinition.ReadAssembly(args[0]);
 
             ParseAssembly(library);
         }
