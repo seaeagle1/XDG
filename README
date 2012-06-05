@@ -1,0 +1,24 @@
+=XDG: Xml Documentation Generator=
+
+[https://github.com/seaeagle1/XDG https://github.com/seaeagle1/XDG]
+
+==What is it?==
+
+XDG is a tool for converting Xml documentation comments from .NET languages like C# and VB.NET into readable web-based API documentation. It is essentially a very simple replacement for more complex and advanced tools like [http://sandcastle.codeplex.com/ Sandcastle] and [http://www.mono-project.com/Monodoc Monodoc].
+
+==How does it work?==
+
+XDG uses Mono.Cecil to reflect a .NET assembly and gather all classes, methods, properties etc. Optionally you can also add the Xml documentation file containing all the documentation comments, XDG will then search that file and add your comments to the type information. 
+
+When all this information is gathered, XDG writes out [http://www.json.org/ JSON] files containing all the information needed to build a documentation page. This JSON object can then be imported in a Javascript, PHP or other scripted template to be displayed in any way you like. Currently we have a pure Javascript/HTML example template using the [http://beebole.com/pure/ PURE template system].
+
+==How do I use it?==
+
+Currently XDG is still very much in its infancy… if you can’t figure it out from the code, you probably shouldn’t use it just yet.
+
+==What license does it have?==
+
+XDG itself is available under the [http://www.mozilla.org/MPL/2.0/ Mozilla Public License v2]. 
+
+It also makes use of XmlDocIdLib (CodeProject Open License) and Mono.Cecil ([https://github.com/jbevain/cecil/wiki/License MIT license]).
+

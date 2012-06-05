@@ -42,7 +42,7 @@ namespace XDG
             LinkName = GetName(type, false, true);
             Title = moduleName + " Documentation - " + Name;
             Namespace = GetNamespace(type);
-            Copyright = "This documentation was generated using <a href=\"\">XDG</a>.";
+            Copyright = "This documentation was generated using <a href=\"https://github.com/seaeagle1/XDG\">XDG</a>.";
 
             CSharpDecl = CSharpTypeDecl(type);
 

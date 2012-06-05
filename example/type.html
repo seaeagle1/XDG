@@ -57,7 +57,7 @@
 			padding-left: 0.4em;
 		}
 		
-		div#summary, div.Methods {
+		div#summary, div.methods {
 			background: #ffffff; /* Old browsers */
 			background: -moz-linear-gradient(top,  #6d88b7 0%, #eaf0fc 4%, #ffffff 86%); /* FF3.6+ */
 			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6d88b7), color-stop(4%,#eaf0fc), color-stop(86%,#ffffff)); /* Chrome,Safari4+ */
@@ -68,7 +68,7 @@
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d88b7', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 		}
 		
-		div.Methods {
+		div.methods {
 			min-height: 30px;
 			margin-left: 10px;
 			margin-right: 10px;
@@ -79,13 +79,13 @@
 			border-radius: 3px;
 		}
 		
-		div.Methods div.NameWithTypes {
+		div.methods div.NameWithTypes {
 			display: inline-block;
 			width: 350px;	
 			vertical-align: top;
 		}
 		
-		div.Methods div.Summary {
+		div.methods div.Summary {
 			display: inline-block;
 			width: 400px;
 			padding-left: 5px;
@@ -95,15 +95,19 @@
 			margin-bottom: 0;
 		}
 		
-		div.details > span {
-			margin-left: 10px;
+		p {
+			margin-top: 0;
 		}
 		
-		span.ReturnDocs {
+		div.details > span, div.details .Parameters {
+			margin-left: 10px;
+		}
+	
+		.Parameters span.Name {
 			font-style: italic;
 		}
 		
-		div.Methods div.details{
+		div.methods div.details{
 			display:none;
 		}
 		
@@ -144,12 +148,16 @@
 			
 			<div id="members">
 				<h2>Members</h2>
-				<div class="Methods" onclick="$(this).children('div.details').toggle();">
+				<div class="methods" onclick="$(this).children('div.details').toggle();">
 					<div class="NameWithTypes"></div><div class="Summary"></div>
 					<div class="details">
-						<h4>Parameters:</h4>
+						<h4>Parameters:</h4> 
+						<p class="Parameters">
+							<span class="Name"></span> (<span class="Type"></span>)<br />
+							&nbsp;&nbsp;<span class="Doc"></span><br />
+						</p>
 						<h4>Returns:</h4> <span class="ReturnType"></span><br />
-						<span class="ReturnDocs"></span>
+						&nbsp;&nbsp;<span class="ReturnDocs"></span>
 					</div>
 				</div>
 			</div>
@@ -160,9 +168,27 @@
 		  url: query+'.js',
 		  dataType: 'json',
 		  success: function(data) {
-			$('#type').autoRender(data);
-			
 			var directive = {
+			 'div.methods':{
+			  'm<-Methods':{
+			   '.NameWithTypes':'m.NameWithTypes',
+			   '.Summary':'m.Summary',
+			   '.ReturnType':'m.ReturnType',
+			   '.ReturnDocs':'m.ReturnDocs',
+			   '.Parameters':{
+			    'p<-m.Parameters':{
+				 '.Type':'p.Type',
+				 '.Doc':'p.Doc',
+				 '.Name':'p.Name',
+				}
+			   }
+			  }
+			 }
+			};
+		  
+			$('#type').autoRender(data, directive);
+			
+			var directive2 = {
 			 'li.primary':{
 			  'm<-Menu':{
 			   'span.ns':'m.Ns',
@@ -175,7 +201,7 @@
 			 }
 			};
 			
-			$('#menu').render(data, directive);
+			$('#menu').render(data, directive2);
 			document.title = data.Title;
 		  }
 		});		
