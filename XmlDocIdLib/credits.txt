@@ -1,0 +1,1 @@
+XmlDocIdLib translates Mono.Cecil types to IDs found in XML docs as described by Przemyslaw Celej in his CodeProject article: http://www.codeproject.com/Articles/42788/Generating-XmlDocId-using-Mono-Cecil
