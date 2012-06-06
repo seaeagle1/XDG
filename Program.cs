@@ -139,6 +139,11 @@ namespace XDG
             return "type.html?" + Type.GetName(type, false, true);
         }
 
+        static string TypeUrl(string fullname)
+        {
+            return "type.html?" + fullname;
+        }
+
         /// <summary>
         /// Get a (local/MSDN) link for this TypeReference
         /// </summary>
@@ -146,17 +151,21 @@ namespace XDG
         /// <returns></returns>
         public static string ToXdgUrl(this TypeReference r)
         {
-            string url;
+            string url = "";
+
             if (r.FullName.StartsWith("System."))
             {
-                url = "http://msdn.microsoft.com/en-us/library/"+r.FullName.ToLower()+".aspx";
+                if(!r.HasGenericParameters && !(r is GenericInstanceType))
+                    url = "http://msdn.microsoft.com/en-us/library/"+r.FullName.ToLower()+".aspx";
             }
             else
             {
                 url = TypeUrl(r);
             }
 
-            return string.Format("<a href=\"{0}\">{1}</a>", url, Type.GetName(r));
+            string href = (string.IsNullOrEmpty(url) ? "" : "href=\"" + url + "\"");
+
+            return string.Format("<a {0}>{1}</a>", href, Type.GetName(r));
         }
 
         /// <summary>
@@ -168,10 +177,61 @@ namespace XDG
         public static string GetElementContent(this XmlNode node, string element)
         {
             XmlNode n = node.SelectSingleNode(element);
-            if (n != null)
-                return n.InnerText.Trim();
-            else
+
+            if (n == null)
                 return null;
+
+            // parse <see> tags
+            XmlNodeList seeTags = n.SelectNodes("see");
+            foreach (XmlNode see in seeTags)
+            {
+                XmlElement e = xmlDoc.CreateElement("a");
+                e.InnerText = see.InnerText;
+                
+                XmlAttribute crefAttr = see.Attributes["cref"];
+                if (crefAttr != null)
+                {
+                    string cref = crefAttr.Value;
+                    cref = cref.Split(new char[]{'`'}).ElementAt(0);
+                    XmlAttribute a = xmlDoc.CreateAttribute("href");
+                    
+                    string text = see.InnerText;
+                    if (string.IsNullOrEmpty(text))
+                        text = cref.Substring(2);
+                    e.InnerText = text;
+
+                    if (cref.StartsWith("T:")) // create Type link
+                    {
+                        if (cref.StartsWith("T:System."))
+                        {
+                            a.Value = "http://msdn.microsoft.com/en-us/library/" + cref.Substring(2) + ".aspx";
+                            e.Attributes.Append(a);
+                        }
+                        else
+                        {
+                            a.Value = TypeUrl(cref.Substring(2));
+                            e.Attributes.Append(a);
+                        }
+                    }
+                }
+
+                if (see.Attributes["href"] != null)
+                    e.Attributes.Append(see.Attributes["href"]);
+
+                n.ReplaceChild(e, see);
+            }
+
+            // parse <c> tags
+            XmlNodeList cTags = n.SelectNodes("c");
+            foreach (XmlNode c in cTags)
+            {
+                XmlElement strong = xmlDoc.CreateElement("strong");
+                strong.InnerText = c.InnerText;
+
+                n.ReplaceChild(strong, c);
+            }
+
+            return n.InnerXml;
         }
 
         /// <summary>
