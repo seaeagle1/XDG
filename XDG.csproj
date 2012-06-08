@@ -46,6 +46,7 @@
     <Compile Include="Method.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property.cs" />
     <Compile Include="Type.cs" />
   </ItemGroup>
   <ItemGroup>

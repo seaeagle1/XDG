@@ -29,6 +29,7 @@ namespace XDG
         public string Namespace { get; set; }
         public List<MenuItem> Menu { get; set; }
         public List<Method> Methods { get; private set; }
+        public List<Property> Properties { get; private set; }
         public string Copyright { get; set; }
 
         // for debugging
@@ -63,6 +64,21 @@ namespace XDG
             }
             Methods.Sort( new Comparison<Method>((Method a, Method b) => {  return a.Name.CompareTo(b.Name); }));
 
+            Properties = new List<Property>();
+            foreach (PropertyDefinition m in type.Properties)
+            {
+                bool isPublic = false;
+                if(m.GetMethod != null && (m.GetMethod.IsPublic || m.GetMethod.IsFamily))
+                    isPublic = true;
+                if(m.SetMethod != null && (m.SetMethod.IsPublic || m.SetMethod.IsFamily))
+                    isPublic = true;
+
+                if(!isPublic)
+                    continue;
+
+                Properties.Add(new Property(m));
+            }
+            Properties.Sort(new Comparison<Property>((Property a, Property b) => { return a.Name.CompareTo(b.Name); }));
         }
 
         public void Write()

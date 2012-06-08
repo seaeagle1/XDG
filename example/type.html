@@ -68,7 +68,18 @@
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d88b7', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 		}
 		
-		div.methods {
+		div.properties {
+			background: #bc9171; /* Old browsers */
+			background: -moz-linear-gradient(top,  #bc9171 0%, #f9efe8 4%, #ffffff 86%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bc9171), color-stop(4%,#f9efe8), color-stop(86%,#ffffff)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top,  #bc9171 0%,#f9efe8 4%,#ffffff 86%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top,  #bc9171 0%,#f9efe8 4%,#ffffff 86%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top,  #bc9171 0%,#f9efe8 4%,#ffffff 86%); /* IE10+ */
+			background: linear-gradient(top,  #bc9171 0%,#f9efe8 4%,#ffffff 86%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bc9171', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */		
+		}
+		
+		div.methods, div.properties {
 			min-height: 30px;
 			margin-left: 10px;
 			margin-right: 10px;
@@ -79,13 +90,13 @@
 			border-radius: 3px;
 		}
 		
-		div.methods div.NameWithTypes {
+		div.methods div.NameWithTypes, div.properties div.NameWithType {
 			display: inline-block;
 			width: 350px;	
 			vertical-align: top;
 		}
 		
-		div.methods div.Summary {
+		div.methods div.Summary, div.properties div.Summary {
 			display: inline-block;
 			width: 400px;
 			padding-left: 5px;
@@ -148,6 +159,11 @@
 			
 			<div id="members">
 				<h2>Members</h2>
+				<div class="properties">
+					<div class="NameWithType"><strong><span class="Name"></span></strong> (<span class="Type"></span>)</div>
+					<div class="Summary"></div>
+				</div>
+				
 				<div class="methods" onclick="$(this).children('div.details').toggle();">
 					<div class="NameWithTypes"></div><div class="Summary"></div>
 					<div class="details">
@@ -169,6 +185,13 @@
 		  dataType: 'json',
 		  success: function(data) {
 			var directive = {
+			 'div.properties':{
+			  'p<-Properties':{
+			   '.Name':'p.Name',
+			   '.Type':'p.Type',
+			   '.Summary':'p.Summary',
+			  }
+			 }, 
 			 'div.methods':{
 			  'm<-Methods':{
 			   '.NameWithTypes':'m.NameWithTypes',
